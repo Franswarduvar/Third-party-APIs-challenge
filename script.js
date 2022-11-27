@@ -1,36 +1,39 @@
-const textValue9 = localStorage.getItem("hr-9");
-const textValue10 = localStorage.getItem("hr-10");
-const textValue11 = localStorage.getItem("hr-11");
-const textValue12 = localStorage.getItem("hr-12");
-const textValue1 = localStorage.getItem("hr-1");
-const textValue2 = localStorage.getItem("hr-2");
-const textValue3 = localStorage.getItem("hr-3");
-const textValue4 = localStorage.getItem("hr-4");
-const textValue5 = localStorage.getItem("hr-5");
-
-const textArea9 = ("#hr-9");
-const textArea10 = ("#hr-10");
-const textArea11 = ("#hr-11");
-const textArea12 = ("#hr-12");
-const textArea1 = ("#hr-1");
-const textArea2 = ("#hr-2");
-const textArea3 = ("#hr-3");
-const textArea4 = ("#hr-4");
-const textArea5 = ("#hr-5");
-
-textArea9.val(textValue9);
-textArea10.val(textValue10);
-textArea11.val(textValue11);
-textArea12.val(textValue12);
-textArea1.val(textValue1);
-textArea2.val(textValue2);
-textArea3.val(textValue3);
-textArea4.val(textValue4);
-textArea5.val(textValue5);
 
 
-var holdDate =moment().format("dddd, MMMM Do, YYYY");
+var textValue9 = localStorage.getItem("hr-9");
+var textValue10 = localStorage.getItem("hr-10");
+var textValue11 = localStorage.getItem("hr-11");
+var textValue12 = localStorage.getItem("hr-12");
+var textValue1 = localStorage.getItem("hr-1");
+var textValue2 = localStorage.getItem("hr-2");
+var textValue3 = localStorage.getItem("hr-3");
+var textValue4 = localStorage.getItem("hr-4");
+var textValue5 = localStorage.getItem("hr-5");
 
+var textArea9 = ("#hr-9");
+var textArea10 = ("#hr-10");
+var textArea11 = ("#hr-11");
+var textArea12 = ("#hr-12");
+var textArea1 = ("#hr-1");
+var textArea2 = ("#hr-2");
+var textArea3 = ("#hr-3");
+var textArea4 = ("#hr-4");
+var textArea5 = ("#hr-5");
+
+textArea9 = (textValue9);
+textArea10 = (textValue10);
+textArea11 = (textValue11);
+textArea12 = (textValue12);
+textArea1 = (textValue1);
+textArea2 = (textValue2);
+textArea3 = (textValue3);
+textArea4 = (textValue4);
+textArea5 = (textValue5);
+
+
+var holdDate = moment().format("dddd, MMMM Do, YYYY");
+var userInput;
+var hourSpan;
 $("#momentDay").text(holdDate);
 
 function time(){
@@ -60,12 +63,24 @@ $(".block").each(function (){
 
 time();
 
-$(".saveBtn").on("click", function(event){
-    event.preventDefault();
-    var TA = $(this).prev();
-    var id = TA.attr("id");
-    var Val = TA.val();
-    localStorage.setItem(id, Val);
+$(".saveBtn").on("click", function(){
+
+    // userInput = $(this).siblings(".form-control").val().trim();
+    // console.log(userInput);
+    // hourSpan = $(this).siblings(".input-group-prepend").text().trim();
+    // console.log(hourSpan);
+    // localStorage.setItem(hourSpan, JSON.stringify(userInput));
+    var Id = textArea9 + textArea10 + textArea11 + textArea12 + textArea1 + textArea2 + textArea3 + textArea4 + textArea5;
+
+    // var Id = textarea.attr("id");
+
+    // var Value = textarea.val();
+    
+
+    localStorage.setItem(Id);
+
+    localStorage.getItem(Id);
+    console.log(Id);
 });
 
 // $(".saveBtn").on("click", function(){
