@@ -1,22 +1,22 @@
-var textValue9 = localStorage.getItem("hr-9");
-var textValue10 = localStorage.getItem("hr-10");
-var textValue11 = localStorage.getItem("hr-11");
-var textValue12 = localStorage.getItem("hr-12");
-var textValue1 = localStorage.getItem("hr-1");
-var textValue2 = localStorage.getItem("hr-2");
-var textValue3 = localStorage.getItem("hr-3");
-var textValue4 = localStorage.getItem("hr-4");
-var textValue5 = localStorage.getItem("hr-5");
+const textValue9 = localStorage.getItem("hr-9");
+const textValue10 = localStorage.getItem("hr-10");
+const textValue11 = localStorage.getItem("hr-11");
+const textValue12 = localStorage.getItem("hr-12");
+const textValue1 = localStorage.getItem("hr-1");
+const textValue2 = localStorage.getItem("hr-2");
+const textValue3 = localStorage.getItem("hr-3");
+const textValue4 = localStorage.getItem("hr-4");
+const textValue5 = localStorage.getItem("hr-5");
 
-var textArea9 = $("#hr-9");
-var textArea10 = $("#hr-10");
-var textArea11 = $("#hr-11");
-var textArea12 = $("#hr-12");
-var textArea1 = $("#hr-1");
-var textArea2 = $("#hr-2");
-var textArea3 = $("#hr-3");
-var textArea4 = $("#hr-4");
-var textArea5 = $("#hr-5");
+const textArea9 = ("#hr-9");
+const textArea10 = ("#hr-10");
+const textArea11 = ("#hr-11");
+const textArea12 = ("#hr-12");
+const textArea1 = ("#hr-1");
+const textArea2 = ("#hr-2");
+const textArea3 = ("#hr-3");
+const textArea4 = ("#hr-4");
+const textArea5 = ("#hr-5");
 
 textArea9.val(textValue9);
 textArea10.val(textValue10);
@@ -29,7 +29,7 @@ textArea4.val(textValue4);
 textArea5.val(textValue5);
 
 
-var holdDate =moment().format("dddd, MMMM, YYYY");
+var holdDate =moment().format("dddd, MMMM Do, YYYY");
 
 $("#momentDay").text(holdDate);
 
@@ -66,43 +66,13 @@ $(".saveBtn").on("click", function(event){
     var id = TA.attr("id");
     var Val = TA.val();
     localStorage.setItem(id, Val);
-})
+});
 
+// $(".saveBtn").on("click", function(){
+//    var userInput = $(this).siblings(".form-control").val().trim();
+//     console.log(userInput);
+//   var hourSpan = $(this).siblings(".input-group-prepend").text().trim();
+//     console.log(hourSpan);
+//     localStorage.setItem(hourSpan, JSON.stringify(userInput));
 
-// $(document).ready(function () {
-//     $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm:ss a"));
-//     $(".saveBtn").on("click",function (){
-//         console.log(this);
-//         var text = $(this).siblings(".description").val();
-//         var time = $(this).parent().attr("id");
-//         localStorage.setItem(time, text);
-//     })
-//     $("#hour9 .description").val(localStorage.getItem("hour9"));
-//     $("#hour10 .description").val(localStorage.getItem("hour10"));
-//     $("#hour11 .description").val(localStorage.getItem("hour11"));
-//     $("#hour12 .description").val(localStorage.getItem("hour12"));
-//     $("#hour13 .description").val(localStorage.getItem("hour13"));
-//     $("#hour14 .description").val(localStorage.getItem("hour14"));
-//     $("#hour15 .description").val(localStorage.getItem("hour15"));
-//     $("#hour16 .description").val(localStorage.getItem("hour16"));
-//     $("#hour17 .description").val(localStorage.getItem("hour17"));
-    
-//     function hourFollower() {
-//         var currentHour = moment().hour();
-//         $(".time-block").each(function () {
-//             var blockHour = parseInt($(this).attr("id").split("hour")[1]);
-//             console.log(blockHour, currentHour);
-
-//             if(blockHour < currentHour){
-//                 $(this).removeClass("past");
-//                 $(this).addClass("present");
-//                 $(this).removeClass("future");
-//             } else {
-//                 $(this).removeClass("past");
-//                 $(this).removeClass("present");
-//                 $(this).adddClass("future");
-//             }
-//         })
-//     }
-//     hourFollower();
-// })
+//   })
