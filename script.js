@@ -34,6 +34,7 @@ var holdDate =moment().format("dddd, MMMM, YYYY");
 $("#momentDay").text(holdDate);
 
 function time(){
+    
 var curHour = moment().hours();
 
 
@@ -42,9 +43,31 @@ $(".block").each(function (){
     if (holdHour < curHour){
         $(this).addClass("past");
     }
+
+    else if (holdHour === curHour){
+        $(this).removeClass("past");
+        $(this).addClass("present");
+    }
+
+    else{
+        $(this).removeClass("past");
+        $(this).removeClass("present");
+        $(this).addClass("future");
+    }
 })
 
 }
+
+time();
+
+$(".saveBtn").on("click", function(event){
+    event.preventDefault();
+    var TA = $(this).prev();
+    var id = TA.attr("id");
+    var Val = TA.val();
+    localStorage.setItem(id, Val);
+})
+
 
 // $(document).ready(function () {
 //     $("#currentDay").text(moment().format("MMMM Do YYYY, h:mm:ss a"));
