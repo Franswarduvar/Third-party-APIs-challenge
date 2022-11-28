@@ -1,93 +1,147 @@
-
-
-var textValue9 = localStorage.getItem("hr-9");
-var textValue10 = localStorage.getItem("hr-10");
-var textValue11 = localStorage.getItem("hr-11");
-var textValue12 = localStorage.getItem("hr-12");
-var textValue1 = localStorage.getItem("hr-1");
-var textValue2 = localStorage.getItem("hr-2");
-var textValue3 = localStorage.getItem("hr-3");
-var textValue4 = localStorage.getItem("hr-4");
-var textValue5 = localStorage.getItem("hr-5");
-
-var textArea9 = ("#hr-9");
-var textArea10 = ("#hr-10");
-var textArea11 = ("#hr-11");
-var textArea12 = ("#hr-12");
-var textArea1 = ("#hr-1");
-var textArea2 = ("#hr-2");
-var textArea3 = ("#hr-3");
-var textArea4 = ("#hr-4");
-var textArea5 = ("#hr-5");
-
-textArea9 = (textValue9);
-textArea10 = (textValue10);
-textArea11 = (textValue11);
-textArea12 = (textValue12);
-textArea1 = (textValue1);
-textArea2 = (textValue2);
-textArea3 = (textValue3);
-textArea4 = (textValue4);
-textArea5 = (textValue5);
-
-
-var holdDate = moment().format("dddd, MMMM Do, YYYY");
-var userInput;
-var hourSpan;
-$("#momentDay").text(holdDate);
-
-function time(){
-    
-var curHour = moment().hours();
-
-
-$(".block").each(function (){
-    var holdHour = parseInt($(this).attr("id"));
-    if (holdHour < curHour){
-        $(this).addClass("past");
-    }
-
-    else if (holdHour === curHour){
-        $(this).removeClass("past");
-        $(this).addClass("present");
-    }
-
-    else{
-        $(this).removeClass("past");
-        $(this).removeClass("present");
-        $(this).addClass("future");
-    }
-})
-
+class TimeblockObj {
+  constructor(hour, todo) {
+    this.hour = hour;
+    this.todo = todo;
+  }
 }
 
-time();
+window.onload = function() {
+  const currentTimeblocks = getCurrentTimeblocks();
+  const currentTime = moment();
 
-$(".saveBtn").on("click", function(){
+  displayCurrentDate(currentTime);
+  displayTimeblockRows(currentTime);
 
-    // userInput = $(this).siblings(".form-control").val().trim();
-    // console.log(userInput);
-    // hourSpan = $(this).siblings(".input-group-prepend").text().trim();
-    // console.log(hourSpan);
-    // localStorage.setItem(hourSpan, JSON.stringify(userInput));
-    var Id = textArea9 + textArea10 + textArea11 + textArea12 + textArea1 + textArea2 + textArea3 + textArea4 + textArea5;
+  document.querySelector('.container')
+    .addEventListener('click', function(event) {
+      containerClicked(event, currentTimeblocks);
+    });
+  setTimeblockText(currentTimeblocks);
+};
 
-    // var Id = textarea.attr("id");
+function getCurrentTimeblocks() {
+  const currentTimeblocks = localStorage.getItem('timeblockObjects');
+  return currentTimeblocks ? JSON.parse(currentTimeblocks) : [];
+}
 
-    // var Value = textarea.val();
-    
+function displayCurrentDate(currentTime) {
+  document.getElementById('currentDay')
+    .textContent = currentTime.format('dddd, MMMM Do');
+}
 
-    localStorage.setItem(Id);
+/*** functions for displaying all timeblock rows ***/
+function displayTimeblockRows(currentTime) {
+  const currentHour = currentTime.hour();
+  //working hours are 9-5 or 9-17
+  for (let i = 9; i <= 17; i ++) {
+    const timeblock = createTimeblockRow(i);
+    const hourCol = createCol(createHourDiv(i), 1);
+    const textArea = createCol(createTextArea(i, currentHour), 10);
+    const saveBtn = createCol(createSaveBtn(i), 1);
+    appendTimeblockColumns(timeblock, hourCol, textArea, saveBtn);
+    document.querySelector('.container').appendChild(timeblock);
+  }
+}
 
-    localStorage.getItem(Id);
-    console.log(Id);
-});
+function createTimeblockRow(hourId) {
+  const timeblock = document.createElement('div');
+  timeblock.classList.add('row');
+  timeblock.id = `timeblock-${hourId}`;
+  return timeblock;
+}
 
-// $(".saveBtn").on("click", function(){
-//    var userInput = $(this).siblings(".form-control").val().trim();
-//     console.log(userInput);
-//   var hourSpan = $(this).siblings(".input-group-prepend").text().trim();
-//     console.log(hourSpan);
-//     localStorage.setItem(hourSpan, JSON.stringify(userInput));
+function createCol(element, colSize) {
+  const col = document.createElement('div');
+  col.classList.add(`col-${colSize}`,'p-0');
+  col.appendChild(element);
+  return col;
+}
 
-//   })
+function createHourDiv(hour) {
+  const hourCol = document.createElement('div');
+  hourCol.classList.add('hour');
+  hourCol.textContent = formatHour(hour);
+  return hourCol;
+}
+
+function formatHour(hour) {
+  const hourString = String(hour);
+  return moment(hourString, 'h').format('hA');
+}
+
+function createTextArea(hour, currentHour) {
+  const textArea = document.createElement('textarea');
+  textArea.classList.add(getTextAreaBackgroundClass(hour, currentHour));
+  return textArea;
+}
+
+function getTextAreaBackgroundClass(hour, currentHour) {
+  return hour < currentHour ? 'past' 
+    : hour === currentHour ? 'present' 
+    : 'future';
+}
+
+function createSaveBtn(hour) {
+  const saveBtn = document.createElement('button');
+  saveBtn.classList.add('saveBtn');
+  saveBtn.innerHTML = '<i class="fas fa-save"></i>';
+  saveBtn.setAttribute('data-hour', hour);
+  return saveBtn;
+}
+
+function appendTimeblockColumns(timeblockRow, hourCol, textAreaCol, saveBtnCol) {
+  const innerCols = [hourCol, textAreaCol, saveBtnCol];
+  for (let col of innerCols) {
+    timeblockRow.appendChild(col);
+  }
+}
+
+/*** functions for saving to local storage ***/
+function containerClicked(event, timeblockList) {
+  if (isSaveButton(event)) {
+    const timeblockHour = getTimeblockHour(event);
+    const textAreaValue = getTextAreaValue(timeblockHour);
+    placeTimeblockInList(new TimeblockObj(timeblockHour, textAreaValue), timeblockList);
+    saveTimeblockList(timeblockList);
+  }
+}
+
+function isSaveButton(event) {
+  return event.target.matches('button') || event.target.matches('.fa-save');
+}
+
+function getTimeblockHour(event) {
+  return event.target.matches('.fa-save') ? event.target.parentElement.dataset.hour : event.target.dataset.hour;
+}
+
+function getTextAreaValue(timeblockHour) {
+  return document.querySelector(`#timeblock-${timeblockHour} textarea`).value;
+}
+
+function placeTimeblockInList(newTimeblockObj, timeblockList) {
+  if (timeblockList.length > 0) {
+    for (let savedTimeblock of timeblockList) {
+      if (savedTimeblock.hour === newTimeblockObj.hour) {
+        savedTimeblock.todo = newTimeblockObj.todo;
+        return;
+      }
+    }
+  } 
+  timeblockList.push(newTimeblockObj);
+  return;
+}
+
+function saveTimeblockList(timeblockList) {
+  localStorage.setItem('timeblockObjects', JSON.stringify(timeblockList));
+}
+
+function setTimeblockText(timeblockList) {
+  if (timeblockList.length === 0 ) {
+    return;
+  } else {
+    for (let timeblock of timeblockList) {
+      document.querySelector(`#timeblock-${timeblock.hour} textarea`)
+        .value = timeblock.todo;
+    }
+  }
+}
